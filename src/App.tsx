@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui/button"
+import { BrowserRouter } from 'react-router-dom';
+import Routes from '@/routes/index';
 
 function App() {
   return (
-    <div className="bg-zinc-900 w-screen h-screen flex items-center justify-center">
-      <Button>Click me</Button>
-    </div>
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
   )
 }
 
-export default App
+export default App;
