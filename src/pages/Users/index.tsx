@@ -2,7 +2,6 @@ import * as React from "react"
 import {
   CaretSortIcon,
   ChevronDownIcon,
-  DotsHorizontalIcon,
 } from "@radix-ui/react-icons"
 import {
   ColumnDef,
@@ -22,9 +21,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -40,33 +36,20 @@ import {
 const data: Raffle[] = [
   {
     id: "m5gr84i9",
-    amount: 200000,
-    name: "Jetta + 50 mil no pix",
-    status: "Em andamento"
+    name: "Caio Mantovani Borba",
+    phone: '14996001271',
+    email: "caiovmborba@gmail.com"
   },
-  {
-    id: "m5gr84i9",
-    amount: 125000,
-    name: "Ducati + 25 mil no pix",
-    status: "Em andamento"
-  }
 ]
 
 export type Raffle = {
   id: string
-  amount: number
   name: string,
-  status: "Em andamento" | "Finalizado"
+  phone: string,
+  email: string
 }
 
 export const columns: ColumnDef<Raffle>[] = [
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -80,54 +63,22 @@ export const columns: ColumnDef<Raffle>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Valor</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(amount)
-
-      return <div className="text-right font-medium">{formatted}</div>
-    },
+    accessorKey: "phone",
+    header: "Telefone",
+    cell: ({ row }) => (
+      <div>{row.getValue("phone")}</div>
+    ),
   },
   {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copiar link da rifa
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar rifa</DropdownMenuItem>
-            <DropdownMenuItem>Sortear rifa</DropdownMenuItem>
-            <DropdownMenuItem>Visualizar compradores</DropdownMenuItem>
-            <DropdownMenuItem>Excluir rifa</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
+    accessorKey: "email",
+    header: "E-mail",
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("email")}</div>
+    ),
+  }
 ]
 
 export default function Dashboard() {
@@ -162,7 +113,7 @@ export default function Dashboard() {
     <div className="w-full p-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filtrar rifas"
+          placeholder="Filtrar nomes"
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
