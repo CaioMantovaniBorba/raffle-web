@@ -3,6 +3,7 @@ import {
   CaretSortIcon,
   ChevronDownIcon,
   DotsHorizontalIcon,
+  PlusCircledIcon
 } from "@radix-ui/react-icons"
 import {
   ColumnDef,
@@ -36,6 +37,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { useNavigate } from "react-router-dom"
 
 const data: Raffle[] = [
   {
@@ -138,6 +140,7 @@ export default function Dashboard() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const navigate = useNavigate();
 
   const table = useReactTable({
     data,
@@ -169,6 +172,9 @@ export default function Dashboard() {
           }
           className="max-w-sm"
         />
+        <Button className="ml-auto" onClick={() => navigate("/raffle")}>
+          Criar nova rifa <PlusCircledIcon className="ml-2 h-4 w-4" />
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
