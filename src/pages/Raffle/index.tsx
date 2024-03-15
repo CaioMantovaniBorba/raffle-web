@@ -7,7 +7,6 @@ import { CalendarIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns";
 import { pt } from "date-fns/locale";
 import { cn } from "@/lib/utils"
-
 import {
   Select,
   SelectContent,
@@ -32,6 +31,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import api from "@/services/api";
+
 const FormSchema = z.object({
   title: z.string().min(6, {
     message: "Informe um título.",
@@ -53,6 +54,7 @@ const FormSchema = z.object({
 })
 
 export default function Raffle() {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -63,7 +65,23 @@ export default function Raffle() {
   })
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    const newRaffle = {
+      title: data.title,
+      description: data.description,
+      amountOfTickets: parseInt(data.amountOfTickets),
+      priceOfTicket: parseFloat(data.priceOfTicket),
+      expectedDrawDate: data.expectedDrawDate,
+      active: true,
+      image: "caio.png"
+    };
+
+    api.post("/raffles/createRaffle", newRaffle)
+      .then(() => (
+        navigate("/dashboard")
+      ))
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   return (
