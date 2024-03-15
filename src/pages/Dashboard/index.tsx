@@ -1,4 +1,7 @@
-import * as React from "react"
+import * as React from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from '@/services/api';
 import {
   CaretSortIcon,
   ChevronDownIcon,
@@ -37,40 +40,41 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useNavigate } from "react-router-dom"
 
-const data: Raffle[] = [
-  {
-    id: "m5gr84i9",
-    amount: 200000,
-    name: "Jetta + 50 mil no pix",
-    status: "Em andamento"
-  },
-  {
-    id: "m5gr84i9",
-    amount: 125000,
-    name: "Ducati + 25 mil no pix",
-    status: "Em andamento"
-  }
-]
+// const data: Raffle[] = [
+//   {
+//     id: 9,
+//     title: "2000 no PIX",
+//     description: "Rifa do Caio",
+//     amountOfTickets: 100000000,
+//     priceOfTicket: 1.5,
+//     expectedDrawDate: "2024-03-08T14:23:05.721Z",
+//     active: true,
+//     image: "caio.png"
+//   }
+// ]
 
 export type Raffle = {
-  id: string
-  amount: number
-  name: string,
-  status: "Em andamento" | "Finalizado"
+  id: number;
+  title: string;
+  description: string;
+  amountOfTickets: number;
+  priceOfTicket: number;
+  expectedDrawDate: string;
+  active: boolean;
+  image: string;
 }
 
 export const columns: ColumnDef<Raffle>[] = [
   {
-    accessorKey: "status",
+    accessorKey: "active",
     header: "Status",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="capitalize">{row.getValue("active") === true ? 'Em andamento' : 'Finalizada'}</div>
     ),
   },
   {
-    accessorKey: "name",
+    accessorKey: "title",
     header: ({ column }) => {
       return (
         <Button
@@ -82,19 +86,34 @@ export const columns: ColumnDef<Raffle>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Valor</div>,
+    accessorKey: "description",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Descrição
+          <CaretSortIcon className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div>{row.getValue("description")}</div>
+  },
+  {
+    accessorKey: "amountOfTickets",
+    header: () => <div className="text-right">Quantidade de bilhetes</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
+      const amountOfTickets = parseFloat(row.getValue("amountOfTickets"));
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("pt-BR", {
         style: "currency",
         currency: "BRL",
-      }).format(amount)
+      }).format(amountOfTickets);
 
       return <div className="text-right font-medium">{formatted}</div>
     },
@@ -103,8 +122,6 @@ export const columns: ColumnDef<Raffle>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -116,7 +133,8 @@ export const columns: ColumnDef<Raffle>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              className="cursor-pointer"
+              onClick={() => navigator.clipboard.writeText("http://rifa/01")}
             >
               Copiar link da rifa
             </DropdownMenuItem>
@@ -140,7 +158,18 @@ export default function Dashboard() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [data, setData] = useState<Raffle[]>([]);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    api.get('/raffles')
+      .then(response =>
+        setData(response.data)
+      ).catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   const table = useReactTable({
     data,
@@ -166,9 +195,9 @@ export default function Dashboard() {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filtrar rifas"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />
