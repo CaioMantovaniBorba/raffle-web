@@ -39,7 +39,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
 
 // const data: Raffle[] = [
 //   {
@@ -65,91 +67,6 @@ export type Raffle = {
   image: string;
 }
 
-export const columns: ColumnDef<Raffle>[] = [
-  {
-    accessorKey: "active",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("active") === true ? 'Em andamento' : 'Finalizada'}</div>
-    ),
-  },
-  {
-    accessorKey: "title",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Nome
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>
-  },
-  {
-    accessorKey: "description",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Descrição
-          <CaretSortIcon className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div>{row.getValue("description")}</div>
-  },
-  {
-    accessorKey: "amountOfTickets",
-    header: () => <div className="text-right">Quantidade de bilhetes</div>,
-    cell: ({ row }) => {
-      const amountOfTickets = parseFloat(row.getValue("amountOfTickets"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      }).format(amountOfTickets);
-
-      return <div className="text-right font-medium">{formatted}</div>
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <DotsHorizontalIcon className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Ações</DropdownMenuLabel>
-            <DropdownMenuItem
-              className="cursor-pointer"
-              onClick={() => navigator.clipboard.writeText("http://rifa/01")}
-            >
-              Copiar link da rifa
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Editar rifa</DropdownMenuItem>
-            <DropdownMenuItem>Sortear rifa</DropdownMenuItem>
-            <DropdownMenuItem>Visualizar compradores</DropdownMenuItem>
-            <DropdownMenuItem>Excluir rifa</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
-  },
-]
-
 export default function Dashboard() {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -161,6 +78,7 @@ export default function Dashboard() {
   const [data, setData] = useState<Raffle[]>([]);
 
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     api.get('/raffles')
@@ -170,6 +88,107 @@ export default function Dashboard() {
         console.log(error);
       });
   }, []);
+
+  function handleDeleteRaffle(id: number) {
+    api.delete(`/raffles/deleteRaffle/${id}`)
+      .then(() => {
+        setData(data.filter(data => data.id !== id));
+        toast({ title: "✔ Rifa deletada com sucesso!" });
+      }
+      ).catch(() => {
+        toast({ title: "❌ Rifa deletada com sucesso!" });
+      });
+  }
+
+  const columns: ColumnDef<Raffle>[] = [
+    {
+      accessorKey: "active",
+      header: "Status",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("active") === true ? 'Em andamento' : 'Finalizada'}</div>
+      ),
+    },
+    {
+      accessorKey: "title",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Nome
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>
+    },
+    {
+      accessorKey: "description",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Descrição
+            <CaretSortIcon className="ml-2 h-4 w-4" />
+          </Button>
+        )
+      },
+      cell: ({ row }) => <div>{row.getValue("description")}</div>
+    },
+    {
+      accessorKey: "amountOfTickets",
+      header: () => <div className="text-right">Quantidade de bilhetes</div>,
+      cell: ({ row }) => {
+        const amountOfTickets = parseFloat(row.getValue("amountOfTickets"));
+
+        // Format the amount as a dollar amount
+        const formatted = new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(amountOfTickets);
+
+        return <div className="text-right font-medium">{formatted}</div>
+      },
+    },
+    {
+      id: "actions",
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Ações</DropdownMenuLabel>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => navigator.clipboard.writeText("http://rifa/01")}
+              >
+                Copiar link da rifa
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Editar rifa</DropdownMenuItem>
+              <DropdownMenuItem>Sortear rifa</DropdownMenuItem>
+              <DropdownMenuItem>Visualizar compradores</DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => handleDeleteRaffle(row.original.id)}
+              >
+                Excluir rifa
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )
+      },
+    },
+  ]
 
   const table = useReactTable({
     data,
@@ -192,6 +211,7 @@ export default function Dashboard() {
 
   return (
     <div className="w-full p-4">
+      <Toaster />
       <div className="flex items-center py-4">
         <Input
           placeholder="Filtrar rifas"
