@@ -1,8 +1,8 @@
-import * as React from "react"
+import React, { useState, useEffect } from "react";
 import {
   CaretSortIcon,
   ChevronDownIcon,
-} from "@radix-ui/react-icons"
+} from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,16 +14,16 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -31,25 +31,26 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import api from "@/services/api";
 
-const data: Raffle[] = [
-  {
-    id: "m5gr84i9",
-    name: "Caio Mantovani Borba",
-    phone: '14996001271',
-    email: "caiovmborba@gmail.com"
-  },
-]
+// const data: User[] = [
+//   {
+//     id: "m5gr84i9",
+//     name: "Caio Mantovani Borba",
+//     phone: '14996001271',
+//     email: "caiovmborba@gmail.com"
+//   },
+// ]
 
-export type Raffle = {
-  id: string
+export type User = {
+  id: number
   name: string,
   phone: string,
   email: string
 }
 
-export const columns: ColumnDef<Raffle>[] = [
+export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => {
@@ -89,6 +90,16 @@ export default function Dashboard() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [data, setData] = useState<User[]>([]);
+
+  useEffect(() => {
+    api.get('/users')
+      .then(response =>
+        setData(response.data)
+      ).catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   const table = useReactTable({
     data,
