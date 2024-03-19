@@ -174,9 +174,6 @@ export default function Dashboard() {
                 Copiar link da rifa
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Editar rifa</DropdownMenuItem>
-              <DropdownMenuItem>Sortear rifa</DropdownMenuItem>
-              <DropdownMenuItem>Visualizar compradores</DropdownMenuItem>
               <DropdownMenuItem
                 className="cursor-pointer"
                 onClick={() => handleDeleteRaffle(row.original.id)}
@@ -221,7 +218,7 @@ export default function Dashboard() {
           }
           className="max-w-sm"
         />
-        <Button className="ml-auto" onClick={() => navigate("/raffle")}>
+        <Button className="ml-auto" onClick={() => navigate("/createRaffle")}>
           Criar nova rifa <PlusCircledIcon className="ml-2 h-4 w-4" />
         </Button>
         <DropdownMenu>
