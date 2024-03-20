@@ -4,6 +4,7 @@ import Login from '@/pages/Login';
 import Dashboard from '@/pages/Dashboard';
 import Users from '@/pages/Users';
 import CreateRaffle from '@/pages/CreateRaffle';
+import ListRaffle from '@/pages/ListRaffle';
 
 const Routes: React.FC = () => (
   <Router>
@@ -11,6 +12,7 @@ const Routes: React.FC = () => (
     <Route path="/dashboard" Component={Dashboard} />
     <Route path="/users" Component={Users} />
     <Route path="/createRaffle" Component={CreateRaffle} />
+    <Route path="/listRaffle" Component={ListRaffle} />
   </Router>
 );
 
