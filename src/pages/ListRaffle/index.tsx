@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { BoxIcon } from "@radix-ui/react-icons";
+import { useNavigate } from 'react-router-dom';
 
 export default function ListRaffle() {
+  const navigate = useNavigate();
+
   return (
     <div className="background h-auto w-screen my-16 flex flex-col items-center justify-center">
       <div className="w-2/3 flex flex-col items-center justify-center">
@@ -12,7 +15,7 @@ export default function ListRaffle() {
           <h1 className="font-bold text-4xl mb-8 text-green-600">R$ 1,50</h1>
         </div>
         <div className="w-full flex justify-center">
-          <Button type="submit" className="w-1/3 text-xl">COMPRAR AGORA</Button>
+          <Button type="submit" size="lg" className="w-1/3 text-xl" onClick={() => navigate("/checkout")}>COMPRAR AGORA</Button>
         </div>
 
         <Separator className="my-8" />
