@@ -13,6 +13,7 @@ interface User {
 export default function Checkout() {
   const [amount, setAmount] = useState(0);
   const [phone, setPhone] = useState(String);
+  const [errorMessage, setErrorMessage] = useState(String);
   const [user, setUser] = useState<User>();
   const priceOfTicket = 1.50;
 
@@ -23,12 +24,15 @@ export default function Checkout() {
     setAmount(amount - 1);
   }
 
-  console.log(phone);
-
   const handleSearchUser = () => {
+    if (phone.length === 0) {
+      return setErrorMessage('Insira seu número de celular.')
+    }
     api.get(`/users/getUser/${phone}`)
-      .then(response =>
-        setUser(response.data)
+      .then(response => {
+        setUser(response.data);
+        setErrorMessage("");
+      }
       ).catch(error => {
         setUser(null);
         console.log(error);
@@ -52,6 +56,7 @@ export default function Checkout() {
             <Input type="number" maxLength={11} placeholder="1499700-0000" className="w-1/3 h-14 text-md" onChange={(e) => setPhone(e.target.value)} />
             {user && <Input type="text" className="w-2/3 h-14 text-md" disabled value={user.name} />}
           </div>
+          {errorMessage && <span className="text-red-600 font-bold text-sm">{errorMessage}</span>}
           <Button onClick={() => handleSearchUser()}>PESQUISAR</Button>
         </div>
 
