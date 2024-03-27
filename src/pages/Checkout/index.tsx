@@ -4,9 +4,16 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@radix-ui/react-label";
 import { MdPix } from "react-icons/md";
+import api from '@/services/api';
+
+interface User {
+  name: string;
+}
 
 export default function Checkout() {
   const [amount, setAmount] = useState(0);
+  const [phone, setPhone] = useState(String);
+  const [user, setUser] = useState<User>();
   const priceOfTicket = 1.50;
 
   const handleDecrement = () => {
@@ -14,6 +21,18 @@ export default function Checkout() {
       return null;
     }
     setAmount(amount - 1);
+  }
+
+  console.log(phone);
+
+  const handleSearchUser = () => {
+    api.get(`/users/getUser/${phone}`)
+      .then(response =>
+        setUser(response.data)
+      ).catch(error => {
+        setUser(null);
+        console.log(error);
+      });
   }
 
   return (
@@ -27,10 +46,13 @@ export default function Checkout() {
       <div className="flex flex-col items-start w-2/3">
         <span className="font-bold text-3xl mb-4">Dados Pessoais</span>
 
-        <div className="flex flex-col w-full max-w-sm items-start space-y-4 mb-4">
-          <Label htmlFor="email" className="text-xl">CPF</Label>
-          <Input type="number" placeholder="000.000.000-00" />
-          <Button type="submit">PESQUISAR</Button>
+        <div className="flex flex-col w-full items-start space-y-4 mb-4">
+          <Label htmlFor="email" className="text-xl">CELULAR</Label>
+          <div className="flex w-full space-x-4">
+            <Input type="number" maxLength={11} placeholder="1499700-0000" className="w-1/3 h-14 text-md" onChange={(e) => setPhone(e.target.value)} />
+            {user && <Input type="text" className="w-2/3 h-14 text-md" disabled value={user.name} />}
+          </div>
+          <Button onClick={() => handleSearchUser()}>PESQUISAR</Button>
         </div>
 
         <div className="flex items-center justify-around bg-slate-900 w-full rounded-md px-4 py-16 mb-8">
