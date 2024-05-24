@@ -19,7 +19,7 @@ export default function Checkout() {
   const [email, setEmail] = useState(String);
   const [number, setNumber] = useState(String);
   const [cep, setCep] = useState(String);
-  const [adress, setAdress] = useState(String);
+  const [address, setAddress] = useState(String);
   const [errorMessage, setErrorMessage] = useState(String);
   const [user, setUser] = useState<User>();
   const [showRegisterForm, setShowRegisterForm] = useState(false);
@@ -51,7 +51,7 @@ export default function Checkout() {
   useEffect(() => {
     if (cep.length === 8) {
       axios.get(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(response => setAdress(response.data))
+        .then(response => setAddress(response.data))
         .catch(error => console.log(error));
     }
   }, [cep]);
@@ -99,7 +99,7 @@ export default function Checkout() {
             </div>
             <div className='flex-col w-full'>
               <Label htmlFor="logradouro" className="text-xl">LOGRADURO</Label>
-              <Input id="logradouro" type="text" value={adress.logradouro} readOnly contentEditable="false" className="h-14 text-md" />
+              <Input id="logradouro" type="text" value={address.logradouro} readOnly contentEditable="false" className="h-14 text-md" />
             </div>
             <div className='flex-col w-[100px]'>
               <Label htmlFor="numero" className="text-xl">NÚMERO</Label>
@@ -107,18 +107,18 @@ export default function Checkout() {
             </div>
             <div className='flex-col w-full'>
               <Label htmlFor="bairro" className="text-xl">BAIRRO</Label>
-              <Input id="bairro" type="text" value={adress.bairro} readOnly className="h-14 text-md" />
+              <Input id="bairro" type="text" value={address.bairro} readOnly className="h-14 text-md" />
             </div>
             <div className='flex-col w-full'>
               <Label htmlFor="localidade" className="text-xl">LOCALIDADE</Label>
-              <Input id="localidade" type="text" value={adress.localidade} readOnly className="h-14 text-md" />
+              <Input id="localidade" type="text" value={address.localidade} readOnly className="h-14 text-md" />
             </div>
           </div>
         }
 
         {errorMessage && <span className="text-red-600 font-bold text-sm mt-2">{errorMessage}</span>}
 
-        <Button className="mt-4" onClick={() => handleSearchUser()}>PESQUISAR</Button>
+        {!showRegisterForm && <Button className="mt-4" onClick={() => handleSearchUser()}>PESQUISAR</Button>}
       </div>
 
       {/* SEÇÃO DE INFORMAÇÕES */}
