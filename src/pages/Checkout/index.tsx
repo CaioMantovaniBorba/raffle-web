@@ -4,8 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Label } from "@radix-ui/react-label";
 import { MdPix } from "react-icons/md";
-import api from '@/services/api';
 import axios from 'axios';
+
+import api from '@/services/api';
+
+import raffleImage from '@/assets/carro-moto.jpg';
 
 interface User {
   name: string;
@@ -23,7 +26,15 @@ export default function Checkout() {
   const [errorMessage, setErrorMessage] = useState(String);
   const [user, setUser] = useState<User>();
   const [showRegisterForm, setShowRegisterForm] = useState(false);
-  const priceOfTicket = 1.50;
+  const [raffle, setRaffle] = useState();
+
+  useEffect(() => {
+    api.get(`/raffles/raffle/${6}`)
+      .then(response => {
+        setRaffle(response.data);
+      })
+      .catch(error => console.log(error));
+  }, []);
 
   const handleDecrement = () => {
     if (amount === 0) {
@@ -124,13 +135,13 @@ export default function Checkout() {
       {/* SEÇÃO DE INFORMAÇÕES */}
       <div className="flex items-center justify-around bg-slate-900 w-full rounded-md px-4 py-16 mb-8">
         <div className="w-1/3">
-          <img src="https://picsum.photos/800/600?grayscale" className="rounded-md object-cover" />
+          <img src={raffleImage} className="rounded-md object-cover" />
         </div>
         <div className="flex flex-col w-2/3 max-w-sm items-start space-y-4">
-          <span className="text-xl">IPHONE 15 PRO MAX</span>
+          <span className="text-xl">{raffle?.title.toUpperCase()}</span>
           <div className="flex w-full justify-between">
             <span className="text-gray-400 font-bold text-xl">Valor</span>
-            <span className="text-gray-400 font-bold text-xl">1,50</span>
+            <span className="text-gray-400 font-bold text-xl">{raffle?.priceOfTicket.toFixed(2).replace('.', ',')}</span>
           </div>
           <div className="flex w-full justify-between">
             <span className="text-gray-400 font-bold text-xl">Quantidade</span>
@@ -139,7 +150,7 @@ export default function Checkout() {
           <Separator className="my-8" />
           <div className="flex w-full justify-between">
             <span className="text-gray-600 font-bold text-xl">Total</span>
-            <span className="text-gray-600 font-bold text-xl">R$ {amount * priceOfTicket}</span>
+            <span className="text-gray-600 font-bold text-xl">R$ {amount * raffle?.priceOfTicket}</span>
           </div>
         </div>
       </div>
