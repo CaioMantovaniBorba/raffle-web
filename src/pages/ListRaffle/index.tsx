@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { BoxIcon } from "@radix-ui/react-icons";
@@ -11,10 +12,12 @@ import raffleImage from '@/assets/carro-moto.jpg';
 export default function ListRaffle() {
   const [raffle, setRaffle] = useState();
 
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.get(`/raffles/raffle/${6}`)
+    api.get(`/raffles/raffle/${id}`)
       .then(response => {
         setRaffle(response.data);
       })

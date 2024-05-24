@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
@@ -28,8 +29,10 @@ export default function Checkout() {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [raffle, setRaffle] = useState();
 
+  const { id } = useParams();
+
   useEffect(() => {
-    api.get(`/raffles/raffle/${6}`)
+    api.get(`/raffles/raffle/${id}`)
       .then(response => {
         setRaffle(response.data);
       })
