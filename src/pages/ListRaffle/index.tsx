@@ -26,8 +26,8 @@ export default function ListRaffle() {
       <div className="w-2/3 flex flex-col items-center justify-center">
         <img src="https://picsum.photos/800/600?grayscale" className="rounded-md object-cover" />
         <div className="w-full flex-column items-start">
-          <h1 className="font-bold text-4xl my-4">{raffle.title}</h1>
-          <h1 className="font-bold text-4xl mb-8 text-green-600">R$ {raffle.priceOfTicket}</h1>
+          <h1 className="font-bold text-4xl my-4">{raffle.title.toUpperCase()}</h1>
+          <h1 className="font-bold text-4xl mb-8 text-green-600">R$ {raffle.priceOfTicket.toFixed(2).replace('.', ',')}</h1>
         </div>
         <div className="w-full flex justify-center">
           <Button type="submit" size="lg" className="w-1/3 text-xl" onClick={() => navigate("/checkout")}>COMPRAR AGORA</Button>
@@ -37,7 +37,7 @@ export default function ListRaffle() {
 
         <div>
           <h1 className="font-bold text-center text-xl">DESCRIÇÃO</h1>
-          <p className="my-2 text-md">PREMIAÇÃO: {raffle.title}</p>
+          <p className="my-2 text-md">PREMIAÇÃO: {raffle.title.toUpperCase()}</p>
           <p className="my-2 text-md">APENAS 1 GANHADOR CONFORME DETALHADO NAS CONDIÇÕES DE PARTICIPAÇÃO.</p>
           <p className="my-2 text-md">Ao preencher a ficha de cadastro e realizar a contribuição única, o titular receberá 01 número da sorte, distinto dos demais, composto de 05 algarismos que será utilizado para concorrer a ... conforme a premiação indicada acima e no material de divulgação.</p>
           <p className="my-2 text-md">O sorteio será realizado assim que finalizar 100% dos títulos (Loteria Federal)</p>
@@ -60,7 +60,7 @@ export default function ListRaffle() {
         <Separator className="my-8" />
 
         <span className="text-2xl mb-4 text-green-600">COMPRE E CONCORRA A</span>
-        <span className="font-bold text-4xl mb-4">{raffle.title}</span>
+        <span className="font-bold text-4xl mb-4">{raffle.title.toUpperCase()}</span>
         <div className="w-[150px] h-0.5 bg-green-600"></div>
       </div>
     </div>
