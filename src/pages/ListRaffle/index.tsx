@@ -37,7 +37,7 @@ export default function ListRaffle() {
           <h1 className="font-bold text-4xl mb-8 text-green-600">R$ {raffle?.priceOfTicket.toFixed(2).replace('.', ',')}</h1>
         </div>
         <div className="w-full flex justify-center">
-          <Button type="submit" size="lg" className="w-1/3 text-xl" onClick={() => navigate("/checkout")}>COMPRAR AGORA</Button>
+          <Button type="submit" size="lg" className="w-1/3 text-xl" onClick={() => navigate(`/checkout/${id}`)}>COMPRAR AGORA</Button>
         </div>
 
         <Separator className="my-8" />

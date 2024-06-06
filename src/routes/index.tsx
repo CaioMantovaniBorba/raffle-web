@@ -14,7 +14,7 @@ const Routes: React.FC = () => (
     <Route path="/users" Component={Users} />
     <Route path="/createRaffle" Component={CreateRaffle} />
     <Route path="/listRaffle/:id" Component={ListRaffle} />
-    <Route path="/checkout" Component={Checkout} />
+    <Route path="/checkout/:id" Component={Checkout} />
   </Router>
 );
 
