@@ -178,7 +178,7 @@ export default function Dashboard() {
               <DropdownMenuLabel>Ações</DropdownMenuLabel>
               <DropdownMenuItem
                 className="cursor-pointer"
-                onClick={() => navigator.clipboard.writeText("http://rifa/01")}
+                onClick={() => navigator.clipboard.writeText(`${URL}/listRaffle/${row.getValue("id")}`)}
               >
                 Copiar link da rifa
               </DropdownMenuItem>
