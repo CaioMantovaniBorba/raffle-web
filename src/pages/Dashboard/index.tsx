@@ -79,11 +79,13 @@ export default function Dashboard() {
 
   const navigate = useNavigate();
   const { toast } = useToast();
+  const URL = window.location.origin;
 
   useEffect(() => {
     api.get('/raffles')
-      .then(response =>
+      .then(response => {
         setData(response.data)
+      }
       ).catch(error => {
         console.log(error);
       });
@@ -109,6 +111,13 @@ export default function Dashboard() {
       ),
     },
     {
+      accessorKey: "id",
+      header: "ID",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("id")}</div>
+      ),
+    },
+    {
       accessorKey: "title",
       header: ({ column }) => {
         return (
@@ -121,7 +130,7 @@ export default function Dashboard() {
           </Button>
         )
       },
-      cell: ({ row }) => <div className="lowercase">{row.getValue("title")}</div>
+      cell: ({ row }) => <a href={`${URL}/listRaffle/${row.getValue("id")}`} target="_blank" className="lowercase underline">{row.getValue("title")}</a>
     },
     {
       accessorKey: "description",
