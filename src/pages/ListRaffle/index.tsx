@@ -44,7 +44,7 @@ export default function ListRaffle() {
           <h1 className="font-bold text-center text-xl">DESCRIÇÃO</h1>
           <p className="my-2 text-md">PREMIAÇÃO: {raffle?.title.toUpperCase()}</p>
           <p className="my-2 text-md">APENAS 1 GANHADOR CONFORME DETALHADO NAS CONDIÇÕES DE PARTICIPAÇÃO.</p>
-          <p className="my-2 text-md">Ao preencher a ficha de cadastro e realizar a contribuição única, o titular receberá 01 número da sorte, distinto dos demais, composto de 05 algarismos que será utilizado para concorrer a ... conforme a premiação indicada acima e no material de divulgação.</p>
+          <p className="my-2 text-md">Ao preencher a ficha de cadastro e realizar a contribuição única, o titular receberá 01 número da sorte, distinto dos demais, composto de 05 algarismos que será utilizado para concorrer a {raffle?.title} conforme a premiação indicada acima e no material de divulgação.</p>
           <p className="my-2 text-md">O sorteio será realizado assim que finalizar 100% dos títulos (Loteria Federal).</p>
           <p className="my-2 text-md">O resultado do sorteio e a identificação do contemplado serão amplamente divulgados neste site.</p>
           <p className="my-2 text-md">A combinação contemplada será composta pelos algarismos do Primeiro Prêmio da extração da Loteria Federal, adicionando-se ao seu final o primeiro e o segundo algarismo do Segundo Prêmio da Loteria Federal.</p>
