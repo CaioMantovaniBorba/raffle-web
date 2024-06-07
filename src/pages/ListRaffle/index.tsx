@@ -6,14 +6,14 @@ import { BoxIcon } from "@radix-ui/react-icons";
 import { useNavigate } from 'react-router-dom';
 
 import api from '@/services/api';
+import { RaffleType } from '@/types/RaffleType';
 
 import raffleImage from '@/assets/carro-moto.jpg';
 
 export default function ListRaffle() {
-  const [raffle, setRaffle] = useState();
+  const [raffle, setRaffle] = useState<RaffleType>();
 
   const { id } = useParams();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,8 +23,6 @@ export default function ListRaffle() {
       })
       .catch(error => console.log(error));
   }, []);
-
-  console.log('raffle', raffle);
 
   return (
     <div className="background h-auto w-screen my-16 flex flex-col items-center justify-center">
