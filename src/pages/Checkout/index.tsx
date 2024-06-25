@@ -9,7 +9,7 @@ import axios from 'axios';
 
 import api from '@/services/api';
 
-import raffleImage from '@/assets/carro-moto.jpg';
+import raffleImage from '@/assets/foto1.jpg';
 
 interface User {
   name: string;
