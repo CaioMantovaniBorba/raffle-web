@@ -9,7 +9,10 @@ import { useNavigate } from 'react-router-dom';
 import api from '@/services/api';
 import { RaffleType } from '@/types/RaffleType';
 
-import image01 from '@/assets/foto1.jpg';
+import image01 from '@/assets/image01.jpg';
+import image02 from '@/assets/image02.jpg';
+import image03 from '@/assets/image03.jpg';
+import image04 from '@/assets/image04.jpg';
 
 export default function ListRaffle() {
   const [raffle, setRaffle] = useState<RaffleType>();
@@ -52,6 +55,7 @@ export default function ListRaffle() {
           <h1 className="font-bold text-xl text-green-600 bg-slate-100 p-2 rounded-md">R$ {raffle?.priceOfTicket.toFixed(2).replace('.', ',')}</h1>
         </div>
 
+        {/* SORTEIO + REDES SOCIAIS */}
         <div className="flex items-center justify-between my-4 w-full">
           <div className="flex items-center">
             <p className="text-md mr-2">Sorteio</p>
@@ -68,6 +72,7 @@ export default function ListRaffle() {
 
         <Separator className="my-8" />
 
+        {/* PROMOÇÃO */}
         <div className="flex items-start w-full mb-4">
           <p className="text-xl font-bold mr-1">📣 Promoção |</p>
           <p className="text-xl">Compre mais barato!</p>
@@ -90,6 +95,7 @@ export default function ListRaffle() {
 
         <Separator className="my-8" />
 
+        {/* PAGAMENTO */}
         <div className="flex items-start w-full mb-4">
           <p className="text-xl font-bold mr-1">⚡ Cotas |</p>
           <p className="text-xl">Escolha sua sorte!</p>
@@ -121,6 +127,7 @@ export default function ListRaffle() {
 
         <Separator className="my-8" />
 
+        {/* DESCRIÇÃO DA RIFA */}
         <div>
           <h1 className="font-bold text-center text-xl">DESCRIÇÃO</h1>
           <p className="my-2 text-md">PREMIAÇÃO: {raffle?.title.toUpperCase()}</p>
@@ -133,9 +140,20 @@ export default function ListRaffle() {
 
         <Separator className="my-8" />
 
-        <span className="text-2xl mb-4 text-green-600">COMPRE E CONCORRA A</span>
-        <span className="font-bold text-4xl mb-4">{raffle?.title.toUpperCase()}</span>
-        <div className="w-[150px] h-0.5 bg-green-600"></div>
+        <div className="flex flex-col items-center mb-8">
+          <span className="text-2xl mb-4 text-green-600">COMPRE E CONCORRA A</span>
+          <span className="font-bold text-4xl mb-4">{raffle?.title.toUpperCase()}</span>
+          <div className="w-[150px] h-0.5 bg-green-600"></div>
+        </div>
+
+        {/* FOTOS */}
+        <div className="flex space-x-2">
+          <img src={image02} className="rounded-md object-cover w-1/2" />
+          <div className="flex flex-col w-1/2">
+            <img src={image03} className="rounded-md object-cover mb-2" />
+            <img src={image04} className="rounded-md object-cover" />
+          </div>
+        </div>
 
       </div>
     </div>
