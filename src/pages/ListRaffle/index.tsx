@@ -3,13 +3,13 @@ import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { AiOutlineWhatsApp, AiOutlineInstagram, AiOutlineTwitter, AiOutlineFacebook } from "react-icons/ai";
+import { AiOutlineWhatsApp, AiOutlineInstagram, AiOutlineTwitter, AiOutlineFacebook, AiOutlineCheckCircle, AiOutlineShoppingCart } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 
 import api from '@/services/api';
 import { RaffleType } from '@/types/RaffleType';
 
-import raffleImage from '@/assets/foto1.jpg';
+import image01 from '@/assets/foto1.jpg';
 
 export default function ListRaffle() {
   const [raffle, setRaffle] = useState<RaffleType>();
@@ -38,8 +38,9 @@ export default function ListRaffle() {
       <div className="w-1/2 flex flex-col items-center justify-center">
         <div className="border bg-slate-900 rounded-md">
           <img
-            src={raffleImage}
-            className="rounded-md object-cover" />
+            src={image01}
+            className="rounded-md object-cover"
+          />
           <div className="w-full flex-column items-start p-2">
             <h1 className="font-bold text-2xl my-2">{raffle?.title.toUpperCase()}</h1>
             <p className="text-md">0,03 CENTAVOS NO PACOTE PROMOCIONAL</p>
@@ -69,7 +70,7 @@ export default function ListRaffle() {
 
         <div className="flex items-start w-full mb-4">
           <p className="text-xl font-bold mr-1">📣 Promoção |</p>
-          <p className="text-md">Compre mais barato!</p>
+          <p className="text-xl">Compre mais barato!</p>
         </div>
 
         <div className="flex bg-slate-100 rounded-md w-full p-2 space-x-4">
@@ -91,9 +92,11 @@ export default function ListRaffle() {
 
         <div className="flex items-start w-full mb-4">
           <p className="text-xl font-bold mr-1">⚡ Cotas |</p>
-          <p className="text-md">Escolha sua sorte!</p>
+          <p className="text-xl">Escolha sua sorte!</p>
         </div>
-        <Button variant="outline" className="bg-slate-600 w-full mb-2">Ver meus números</Button>
+        <Button variant="outline" className="bg-slate-600 w-full mb-2">
+          <AiOutlineShoppingCart className="h-6 w-6 cursor-pointer" />&nbsp; Ver meus números
+        </Button>
         <div className="flex flex-col items-center justify-around bg-slate-900 w-full rounded-md p-16 space-y-8">
           <p className="text-md">Selecione a quantidade de números</p>
           <div className="justify-between grid grid-cols-2 gap-4">
@@ -112,7 +115,9 @@ export default function ListRaffle() {
             </div>
           </div>
         </div>
-        <Button variant="outline" className="bg-green-600 w-full mt-2">Participar do sorteio</Button>
+        <Button variant="outline" className="bg-green-600 w-full mt-2">
+          <AiOutlineCheckCircle className="h-6 w-6 cursor-pointer" />&nbsp; Participar do sorteio
+        </Button>
 
         <Separator className="my-8" />
 
@@ -131,6 +136,7 @@ export default function ListRaffle() {
         <span className="text-2xl mb-4 text-green-600">COMPRE E CONCORRA A</span>
         <span className="font-bold text-4xl mb-4">{raffle?.title.toUpperCase()}</span>
         <div className="w-[150px] h-0.5 bg-green-600"></div>
+
       </div>
     </div>
   )
