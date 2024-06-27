@@ -110,12 +110,48 @@ export default function ListRaffle() {
 
         {/* PAGAMENTO */}
         <div className="flex items-start w-full mb-4">
-          <p className="text-xl font-bold mr-1">⚡ Cotas |</p>
+          <p className="text-xl font-bold mr-1">🍀 Cotas |</p>
           <p className="text-xl">Escolha sua sorte!</p>
         </div>
-        <Button variant="outline" className="bg-slate-600 w-full mb-2">
-          <AiOutlineShoppingCart className="h-6 w-6 cursor-pointer" />&nbsp; Ver meus números
-        </Button>
+
+        {/* MODAL DE CONSULTA DE COMPRAS */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="bg-slate-600 w-full mb-2">
+              <AiOutlineShoppingCart className="h-6 w-6 cursor-pointer" />&nbsp; Ver meus números
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[450px]">
+            <DialogHeader>
+              <DialogTitle>🔎 Buscar seus números</DialogTitle>
+              <Separator className="my-8" />
+              <DialogDescription className="bg-slate-900 rounded-md p-2">
+                Insira o seu telefone para consultar seus bilhetes já comprados.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex">
+              <div className="flex flex-col items-start w-full space-y-2">
+                <Label htmlFor="phone" className="text-right">Informe seu telefone</Label>
+                <InputMask
+                  id="phone"
+                  mask='(99) 99999-9999'
+                  className={cn(
+                    "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  )}
+                  type="tel"
+                  placeholder="(00) 00000-0000"
+                  value={phone}
+                  onChange={(e: Event) => console.log(e.target.value)}>
+                </InputMask>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button className="w-full" type="submit">
+                Continuar&nbsp; <AiOutlineArrowRight className="h-4 w-4 cursor-pointer" />
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
         <div className="flex flex-col items-center justify-around bg-slate-900 w-full rounded-md p-16 space-y-8">
           <p className="text-md">Selecione a quantidade de números</p>
           <div className="justify-between grid grid-cols-2 gap-4">
@@ -145,7 +181,7 @@ export default function ListRaffle() {
             <DialogHeader>
               <DialogTitle>Checkout</DialogTitle>
               <Separator className="my-8" />
-              <DialogDescription>
+              <DialogDescription className="bg-slate-900 rounded-md p-2">
                 Você está adquirindo {amount} títulos da ação entre amigos {raffle?.title.toUpperCase()}, seus números serão gerados assim que concluir a compra.
               </DialogDescription>
             </DialogHeader>
