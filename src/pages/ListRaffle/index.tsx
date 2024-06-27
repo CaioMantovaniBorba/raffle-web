@@ -2,9 +2,20 @@ import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { AiOutlineWhatsApp, AiOutlineInstagram, AiOutlineTwitter, AiOutlineFacebook, AiOutlineCheckCircle, AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AiOutlineWhatsApp, AiOutlineInstagram, AiOutlineTwitter, AiOutlineFacebook, AiOutlineCheckCircle, AiOutlineShoppingCart, AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
+
 
 import api from '@/services/api';
 import { RaffleType } from '@/types/RaffleType';
@@ -17,6 +28,7 @@ import image04 from '@/assets/image04.jpg';
 export default function ListRaffle() {
   const [raffle, setRaffle] = useState<RaffleType>();
   const [amount, setAmount] = useState(0);
+  const [phone, setPhone] = useState(null);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -39,6 +51,8 @@ export default function ListRaffle() {
   return (
     <div className="background h-auto w-screen my-16 flex flex-col items-center justify-center">
       <div className="w-1/2 flex flex-col items-center justify-center">
+
+
         <div className="border bg-slate-900 rounded-md">
           <img
             src={image01}
@@ -61,7 +75,6 @@ export default function ListRaffle() {
             <p className="text-md mr-2">Sorteio</p>
             <h1 className="text-md text-black bg-slate-100 p-1 rounded-md">26/06/2024 às 16h30</h1>
           </div>
-
           <div className="flex space-x-2">
             <AiOutlineWhatsApp className="h-6 w-6 cursor-pointer opacity-50" />
             <AiOutlineTwitter className="h-6 w-6 cursor-pointer opacity-50" />
@@ -77,7 +90,6 @@ export default function ListRaffle() {
           <p className="text-xl font-bold mr-1">📣 Promoção |</p>
           <p className="text-xl">Compre mais barato!</p>
         </div>
-
         <div className="flex bg-slate-100 rounded-md w-full p-2 space-x-4">
           <div className="flex justify-center bg-green-600 w-1/4 rounded-md cursor-pointer">
             <p className="font-bold">300 por R$ 9,00</p>
@@ -106,10 +118,10 @@ export default function ListRaffle() {
         <div className="flex flex-col items-center justify-around bg-slate-900 w-full rounded-md p-16 space-y-8">
           <p className="text-md">Selecione a quantidade de números</p>
           <div className="justify-between grid grid-cols-2 gap-4">
-            <Button variant="outline" size="lg" className="w-[220px] h-20 text-md" onClick={() => setAmount(amount + 250)}>+250</Button>
-            <Button variant="outline" size="lg" className="w-[220px] h-20 text-md" onClick={() => setAmount(amount + 500)}>+500</Button>
-            <Button variant="outline" size="lg" className="w-[220px] h-20 text-md" onClick={() => setAmount(amount + 1000)}>+1000</Button>
-            <Button variant="outline" size="lg" className="w-[220px] h-20 text-md" onClick={() => setAmount(amount + 2000)}>+2000</Button>
+            <Button variant="outline" size="lg" className="w-[240px] h-24 text-2xl" onClick={() => setAmount(amount + 250)}>+250</Button>
+            <Button variant="outline" size="lg" className="w-[240px] h-24 text-2xl" onClick={() => setAmount(amount + 500)}>+500</Button>
+            <Button variant="outline" size="lg" className="w-[240px] h-24 text-2xl" onClick={() => setAmount(amount + 1000)}>+1000</Button>
+            <Button variant="outline" size="lg" className="w-[240px] h-24 text-2xl" onClick={() => setAmount(amount + 2000)}>+2000</Button>
           </div>
           <div className="flex items-center">
             <div>
@@ -121,9 +133,34 @@ export default function ListRaffle() {
             </div>
           </div>
         </div>
-        <Button variant="outline" className="bg-green-600 w-full mt-2">
-          <AiOutlineCheckCircle className="h-6 w-6 cursor-pointer" />&nbsp; Participar do sorteio
-        </Button>
+        {/* MODAL DE VERIFICAÇÃO DE CONTA */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="bg-green-600 w-full mt-2">
+              <AiOutlineCheckCircle className="h-6 w-6 cursor-pointer" />&nbsp; Participar do sorteio
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[450px]">
+            <DialogHeader>
+              <DialogTitle>Checkout</DialogTitle>
+              <Separator className="my-8" />
+              <DialogDescription>
+                Você está adquirindo {amount} títulos da ação entre amigos {raffle?.title.toUpperCase()}, seus números serão gerados assim que concluir a compra.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex">
+              <div className="flex flex-col items-start w-full space-y-2">
+                <Label htmlFor="phone" className="text-right">Informe seu telefone</Label>
+                <Input id="phone" type="tel" maxLength={11} placeholder="(00) 00000-0000" className="w-full" onChange={(e) => console.log(e.target.value)} />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button className="w-full" type="submit">
+                Continuar&nbsp; <AiOutlineArrowRight className="h-4 w-4 cursor-pointer" />
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <Separator className="my-8" />
 
@@ -137,9 +174,7 @@ export default function ListRaffle() {
           <p className="my-2 text-md">O resultado do sorteio e a identificação do contemplado serão amplamente divulgados neste site.</p>
           <p className="my-2 text-md">A combinação contemplada será composta pelos algarismos do Primeiro Prêmio da extração da Loteria Federal, adicionando-se ao seu final o primeiro e o segundo algarismo do Segundo Prêmio da Loteria Federal.</p>
         </div>
-
         <Separator className="my-8" />
-
         <div className="flex flex-col items-center mb-8">
           <span className="text-2xl mb-4 text-green-600">COMPRE E CONCORRA A</span>
           <span className="font-bold text-4xl mb-4">{raffle?.title.toUpperCase()}</span>
@@ -154,7 +189,6 @@ export default function ListRaffle() {
             <img src={image04} className="rounded-md object-cover" />
           </div>
         </div>
-
       </div>
     </div>
   )
