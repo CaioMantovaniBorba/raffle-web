@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/dialog";
 import { AiOutlineWhatsApp, AiOutlineInstagram, AiOutlineTwitter, AiOutlineFacebook, AiOutlineCheckCircle, AiOutlineShoppingCart, AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
-
+import InputMask from 'react-input-mask';
+import { cn } from "@/lib/utils"
 
 import api from '@/services/api';
 import { RaffleType } from '@/types/RaffleType';
@@ -151,7 +152,17 @@ export default function ListRaffle() {
             <div className="flex">
               <div className="flex flex-col items-start w-full space-y-2">
                 <Label htmlFor="phone" className="text-right">Informe seu telefone</Label>
-                <Input id="phone" type="tel" maxLength={11} placeholder="(00) 00000-0000" className="w-full" onChange={(e) => console.log(e.target.value)} />
+                <InputMask
+                  id="phone"
+                  mask='(99) 99999-9999'
+                  className={cn(
+                    "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  )}
+                  type="tel"
+                  placeholder="(00) 00000-0000"
+                  value={phone}
+                  onChange={(e: Event) => console.log(e.target.value)}>
+                </InputMask>
               </div>
             </div>
             <DialogFooter>
